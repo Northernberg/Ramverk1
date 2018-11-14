@@ -1,0 +1,28 @@
+.wrap-all {
+    background-image: url("../img/background_start.jpg");
+}
+
+.inner-wrap-main {
+    background-color: white;
+    margin-bottom: 18px;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.outer-wrap-header {
+    background-color: black;
+    color: white;
+}
+
+.outer-wrap-main {
+    min-height: 20em;
+}
+
+.rm-default > li > ul {
+    color: black;
+}
+
+.outer-wrap-footer {
+    min-height: 1em;
+    padding: 0 ;
+}
