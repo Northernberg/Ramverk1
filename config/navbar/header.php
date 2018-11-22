@@ -48,5 +48,10 @@ return [
             "url" => "ip",
             "title" => "Ip-Adress-Validator",
         ],
+        [
+            "text" => "Geo-locator",
+            "url" => "geotag",
+            "title" => "Geotag"
+        ]
     ],
 ];

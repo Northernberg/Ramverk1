@@ -1,11 +1,11 @@
 <?php
 
-namespace Anax\IpAdressValidator;
+namespace Anax\geotag;
 
 use Anax\Commons\ContainerInjectableInterface;
 use Anax\Commons\ContainerInjectableTrait;
+use Anax\Models\IpStackApi;
 use Anax\Models\IpAdressValidator;
-
 
 // use Anax\Route\Exception\ForbiddenException;
 // use Anax\Route\Exception\NotFoundException;
@@ -20,7 +20,7 @@ use Anax\Models\IpAdressValidator;
  *
  * @SuppressWarnings(PHPMD.TooManyPublicMethods)
  */
-class IpAdressController implements ContainerInjectableInterface
+class GeotagJsonController implements ContainerInjectableInterface
 {
     use ContainerInjectableTrait;
 
@@ -53,47 +53,27 @@ class IpAdressController implements ContainerInjectableInterface
      *
      * @return object
      */
-    public function indexActionGet() : object
+    public function geoAction($ip) : array
     {
-        $title = "Ip adress";
-
-        $page = $this->di->get("page");
-
-        $page->add("anax/ip/index");
-
-        return $page->render([
-            "title" => $title,
-        ]);
-    }
-
-    /**
-     * Update current selected style.
-     *
-     * @return object
-     */
-    public function indexActionPost() : object
-    {
-        $title = "Ip adress";
-        $ipAdressValidator = new IpAdressValidator();
-
         $page = $this->di->get("page");
         $request = $this->di->get("request");
-        $ip_adress = $request->getPost("ip-adress");
-        $type = $ipAdressValidator->getType($ip_adress);
-        $domain = null;
+        $json = null;
+        $ipStack = new IpStackApi();
+        $validator = new IpAdressValidator();
+        $geotag = null;
 
-        if ($type) {
-            $domain = gethostbyaddr($ip_adress);
+        if ($validator->validateIp($ip)) {
+            $geotag = $ipStack->getGeo($ip);
         }
 
-        $page->add("anax/ip/validate", [
-            "ip" => $ip_adress,
-            "type" => $type,
-            "domain" => $domain,
-        ]);
+        $json = [
+            "Ip-adress" => $geotag["ip"],
+            "Type" => $geotag["type"],
+            "Latitude" => $geotag["latitude"],
+            "Longitude" => $geotag["longitude"],
+            "Land" => $geotag["country_name"],
+        ];
 
-        return $page->render([
-            "title" => $title,
-        ]);
+        return [$json];
     }
 }

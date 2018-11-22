@@ -1,11 +1,11 @@
 <?php
 
-namespace Anax\IpAdressValidator;
+namespace Anax\geotag;
 
 use Anax\Commons\ContainerInjectableInterface;
 use Anax\Commons\ContainerInjectableTrait;
+use Anax\Models\IpStackApi;
 use Anax\Models\IpAdressValidator;
-
 
 // use Anax\Route\Exception\ForbiddenException;
 // use Anax\Route\Exception\NotFoundException;
@@ -20,7 +20,7 @@ use Anax\Models\IpAdressValidator;
  *
  * @SuppressWarnings(PHPMD.TooManyPublicMethods)
  */
-class IpAdressController implements ContainerInjectableInterface
+class GeotagController implements ContainerInjectableInterface
 {
     use ContainerInjectableTrait;
 
@@ -53,13 +53,15 @@ class IpAdressController implements ContainerInjectableInterface
      *
      * @return object
      */
-    public function indexActionGet() : object
+    public function indexAction() : object
     {
-        $title = "Ip adress";
+        $title = "Geotag";
 
         $page = $this->di->get("page");
 
-        $page->add("anax/ip/index");
+        $page->add("anax/geo/index", [
+            "default" => $this->di->get("request")->getServer("REMOTE_ADDR"),
+        ]);
 
         return $page->render([
             "title" => $title,
@@ -74,22 +76,20 @@ class IpAdressController implements ContainerInjectableInterface
     public function indexActionPost() : object
     {
         $title = "Ip adress";
-        $ipAdressValidator = new IpAdressValidator();
 
+        $ipStack = new IpStackApi();
+        $validator = new IpAdressValidator();
         $page = $this->di->get("page");
         $request = $this->di->get("request");
         $ip_adress = $request->getPost("ip-adress");
-        $type = $ipAdressValidator->getType($ip_adress);
-        $domain = null;
+        $geotag = null;
 
-        if ($type) {
-            $domain = gethostbyaddr($ip_adress);
+        if ($validator->validateIp($ip_adress)) {
+            $geotag = $ipStack->getGeo($ip_adress);
         }
 
-        $page->add("anax/ip/validate", [
-            "ip" => $ip_adress,
-            "type" => $type,
-            "domain" => $domain,
+        $page->add("anax/geo/result", [
+            "geo" => $geotag,
         ]);
 
         return $page->render([
