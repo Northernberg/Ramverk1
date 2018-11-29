@@ -52,6 +52,11 @@ return [
             "text" => "Geo-locator",
             "url" => "geotag",
             "title" => "Geotag"
+        ],
+        [
+            "text" => "Weather",
+            "url" => "weather",
+            "title" => "Weather"
         ]
     ],
 ];

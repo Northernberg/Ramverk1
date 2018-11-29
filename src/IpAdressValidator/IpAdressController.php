@@ -6,7 +6,6 @@ use Anax\Commons\ContainerInjectableInterface;
 use Anax\Commons\ContainerInjectableTrait;
 use Anax\Models\IpAdressValidator;
 
-
 // use Anax\Route\Exception\ForbiddenException;
 // use Anax\Route\Exception\NotFoundException;
 // use Anax\Route\Exception\InternalErrorException;
@@ -78,16 +77,16 @@ class IpAdressController implements ContainerInjectableInterface
 
         $page = $this->di->get("page");
         $request = $this->di->get("request");
-        $ip_adress = $request->getPost("ip-adress");
-        $type = $ipAdressValidator->getType($ip_adress);
+        $ipAdress = $request->getPost("ip-adress");
+        $type = $ipAdressValidator->getType($ipAdress);
         $domain = null;
 
         if ($type) {
-            $domain = gethostbyaddr($ip_adress);
+            $domain = gethostbyaddr($ipAdress);
         }
 
         $page->add("anax/ip/validate", [
-            "ip" => $ip_adress,
+            "ip" => $ipAdress,
             "type" => $type,
             "domain" => $domain,
         ]);

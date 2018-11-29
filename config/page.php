@@ -19,10 +19,11 @@ return [
             "lang" => "sv",
             "stylesheets" => [
                 "css/dbwebb-se.min.css",
-                "css/style.css"
+                "css/style.css",
             ],
             "javascripts" => [
                 "js/responsive-menu.js",
+                "js/main.js",
             ],
         ],
     ],

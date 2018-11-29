@@ -4,7 +4,6 @@ namespace Anax\geotag;
 
 use Anax\Commons\ContainerInjectableInterface;
 use Anax\Commons\ContainerInjectableTrait;
-use Anax\Models\IpStackApi;
 use Anax\Models\IpAdressValidator;
 
 // use Anax\Route\Exception\ForbiddenException;
@@ -76,16 +75,18 @@ class GeotagController implements ContainerInjectableInterface
     public function indexActionPost() : object
     {
         $title = "Ip adress";
+        $api = require ANAX_INSTALL_PATH . "/config/api_keys.php";
 
-        $ipStack = new IpStackApi();
         $validator = new IpAdressValidator();
         $page = $this->di->get("page");
         $request = $this->di->get("request");
-        $ip_adress = $request->getPost("ip-adress");
+        $ipAdress = $request->getPost("ip-adress");
+        $curl = $this->di->get("curlwrap");
+        $result = $curl->curl(["http://api.ipstack.com/" . $ipAdress . "?access_key=" . $api["geotag"]]);
         $geotag = null;
 
-        if ($validator->validateIp($ip_adress)) {
-            $geotag = $ipStack->getGeo($ip_adress);
+        if ($validator->validateIp($ipAdress)) {
+            $geotag = $result[0];
         }
 
         $page->add("anax/geo/result", [

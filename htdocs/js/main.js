@@ -4,5 +4,7 @@
 (function() {
     "use strict";
 
+
     console.info("main.js ready and loaded.");
+
 })();

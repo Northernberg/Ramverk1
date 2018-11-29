@@ -51,27 +51,23 @@ class IpAdressJsonController implements ContainerInjectableInterface
      *
      * @return object
      */
-    public function ipActionGet($ip) : array
+    public function ipActionGet($ipAdress) : array
     {
-        $page = $this->di->get("page");
-        $session = $this->di->get("session");
-        $request = $this->di->get("request");
-        // $ip = $request->getGet("ip") ? $request->getGet("ip") : null;
         $json = null;
         $type = null;
         $domain = null;
 
-        if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
+        if (filter_var($ipAdress, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
             $type = "IPV6";
-        } elseif (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
+        } elseif (filter_var($ipAdress, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
             $type = "IPV4";
         }
 
-        if (filter_var($ip, FILTER_VALIDATE_IP)) {
-            $domain = gethostbyaddr($ip);
+        if (filter_var($ipAdress, FILTER_VALIDATE_IP)) {
+            $domain = gethostbyaddr($ipAdress);
         }
         $json = [
-            "ip-adress" => $ip,
+            "ip-adress" => $ipAdress,
             "type" => $type,
             "domain" => $domain,
         ];

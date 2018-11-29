@@ -40,12 +40,11 @@ class GeotagControllerJsonTest extends TestCase
     public function testGeoAction()
     {
         $this->di->get("request")->setPost("ip-adress", "255.255.255.255");
-        $ip = $this->di->get("request")->getPost("ip-adress");
-        $this->assertEquals($ip, "255.255.255.255");
+        $ipAdress = $this->di->get("request")->getPost("ip-adress");
+        $this->assertEquals($ipAdress, "255.255.255.255");
 
         $this->controller->geoAction("255.255.255.255");
         // Test wrong ip
         $this->controller->geoAction("asd");
     }
-
 }

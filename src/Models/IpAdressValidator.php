@@ -4,24 +4,23 @@ namespace Anax\Models;
 
 class IpAdressValidator
 {
-    function getType($ip)
+    public function getType($ipAdress)
     {
         $type = null;
-        if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
+        if (filter_var($ipAdress, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
             $type = "IPV6";
-        } elseif (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
+        } elseif (filter_var($ipAdress, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
             $type = "IPV4";
         }
 
         return $type;
     }
 
-    function validateIp($ip)
+    public function validateIp($ipAdress)
     {
-        if (filter_var($ip, FILTER_VALIDATE_IP)) {
+        if (filter_var($ipAdress, FILTER_VALIDATE_IP)) {
             return true;
         }
         return false;
     }
-
 }
