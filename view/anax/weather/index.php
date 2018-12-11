@@ -42,11 +42,13 @@ namespace Anax\View;
 <h1> Result </h1>
     <table>
         <th> Day </th>
+        <th> Time </th>
         <th> Weather </th>
         <th> Min Temperature </th>
         <th> Max temperature </th>
     <?php foreach ($data[0]["daily"]["data"] as $day) : ?>
         <tr>
+            <td><?= gmdate("d M", $day["time"]) ?> </td>
             <td><?= gmdate("H:i:s", $day["time"]) ?> </td>
             <td> <?= $day["summary"] ?> </td>
             <td> <?= round(($day["temperatureLow"] - 32) / 1.8, 0) ?> &#8451; </td>

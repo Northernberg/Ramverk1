@@ -78,7 +78,7 @@ class WeatherController implements ContainerInjectableInterface
         if ($ipAdress[0]["type"] == null) {
             $session->set("flashmessage", "Not a valid ip-adress.");
         } else {
-            $data = $curl->curl(["https://api.darksky.net/forecast/" . $api["darksky"] . "/" . $ipAdress[0]["latitude"] . "," . $ipAdress[0]["longitude"] . "?exclude=[currently,flags,alerts,hourly]"]);
+            $data = $curl->curl(["https://api.darksky.net/forecast/" . $api["darksky"] . "/" . $ipAdress[0]["latitude"] . "," . $ipAdress[0]["longitude"] . "?exclude=[flags,alerts,hourly,currently]"]);
             if (sizeof($data[0]) == 2) {
                 $session->set("flashmessage", "No weather to be shown.");
             }
@@ -103,7 +103,6 @@ class WeatherController implements ContainerInjectableInterface
 
         $ipAdress = $curl->curl(["http://api.ipstack.com/" . $location . "?access_key=" . $api["geotag"]]);
         $data = $curl->curl(["https://api.darksky.net/forecast/" . $api["darksky"] . "/" . $ipAdress[0]["latitude"] . "," . $ipAdress[0]["longitude"] . "?exclude=[currently,flags,alerts,hourly]"]);
-
         if ($ipAdress[0]["type"] != null) {
             $json = [
                 "Ip-info" => [
